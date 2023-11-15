@@ -131,7 +131,8 @@ const [activeColumn,setActiveColumn]=useState<Column|null>(null)
 const [activeTask,setActiveTask]=useState<Task|null>(null)
 const [tasks,setTasks]=useState<Task[]>(taskData?[taskData]:[]);
 // const columnIds = useMemo(()=>columns?.map(col=>col.id),[columns])
-
+const columnsCount=columnData?.length;
+console.log("select count",columnsCount)
     const sensors = useSensors(
         useSensor(PointerSensor,{
             activationConstraint:{
@@ -328,10 +329,24 @@ if(error){
   alignItems:"start",
   marginTop:2
   }}>
-    
-   {!createMode &&<Button variant="outlined" size="small" startIcon={<AddIcon />}
+    {columnsCount===5 && 
+    <Box
+    sx={{
+      display:"flex",
+      justifyContent:"center",
+      color:"red",
+      height:50,
+      padding:8,
+    }}
+    >
+      You Can only Add Upto 5 colums!!
+      
+      </Box>}
+
+   {!createMode && columnsCount<5 &&<Button variant="outlined" size="small" startIcon={<AddIcon />}
    sx={{
-    padding:"5px 50px"
+    padding:"5px 50px",
+    textTransform:"none"
    }}
    onClick={()=>{
     setCreateMode(true)
@@ -343,13 +358,11 @@ if(error){
 <Box sx={{width:250,
         minHeight:100,
         padding:2,
-        // backgroundColor:"green",
         display:"flex",
         flexDirection:"column"
         }}>
     <Box
     sx={{
-      //  backgroundColor:"yellow",
        padding:"0px 5px"
     }}
     >
@@ -376,17 +389,19 @@ if(error){
      sx={{
       height:30,
       width:20,
+      textTransform:"none"
     }}
     size="small"  onClick={()=>{setCreateMode(false)}}>Cancel</Button> 
     <Button size="small"  variant='contained' 
     sx={{
       height:30,
       width:20,
+      textTransform:"none"
     }}
     onClick={()=>{
         createColumn(name)
        setCreateMode(false)
-        }}>add</Button>
+        }}>Add</Button>
     </Box>
     </Box>}
 </Box>
@@ -396,16 +411,17 @@ if(error){
             {activeColumn && (<Container 
             key={activeColumn.id}
             column={activeColumn} 
-            updateColumn={updateColumn}
-            createTasks={createTasks}
-            deleteTask={deleteTask}
-            updateTask={updateTask}
+            createTasks={createtask}
+            deleteTask={deleteTasks}
+            updateTask={updateTasks}
+            updateColumn={updateColumns}
+            deleteCols={deleteCols}
             tasks={tasks.filter(task=>task.columnId===activeColumn.id)}
             
             />)}
         {activeTask && <TaskComponent task={activeTask}
-        deleteTask={deleteTask}
-        updateTask={updateTask}/>}
+        deleteTask={deleteTasks}
+        updateTask={updateTasks}/>}
         </DragOverlay>,
         document.body
         )}

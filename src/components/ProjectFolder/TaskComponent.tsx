@@ -50,6 +50,8 @@ setEditMode((prev)=>!prev);
         {...listeners}
         >
             <TextField
+            type="text"
+            label="Title"
             autoFocus
             value={newTaskName}
             onBlur={()=>{

@@ -22,7 +22,7 @@ function Container(props:Props) {
     const[newColName,setNewColName]=useState<string>(column.name)
     const [editMode, setEditMode]= useState(false)
     const [editTaskMode,setEditTaskMode]=useState(false)
-    const [taskNames,setTaskNames]=useState<string>()
+    const [taskNames,setTaskNames]=useState<string>('')
     // let taskName=taskNames;
 console.log(editTaskMode)
     const tasksIds = useMemo(()=>{
@@ -41,22 +41,6 @@ console.log(editTaskMode)
         transition,
         transform:CSS.Transform.toString(transform),
     }
-    // if(isDragging){
-    //     console.log("isDragging container",isDragging)
-    //     return <Box  ref={setNodeRef}
-    //     style={style}  sx={{
-    //         width:250,
-    //         minHeight:100,
-    //         backgroundColor:"#fff",
-    //         gap:4,
-    //         margin:2,
-    //         borderRadius:2,
-    //         border:"solid 2px #000",
-    //         padding:1,
-    //         alignItems:"center"
-    
-    //     }}>{column.name}</Box>
-    // }
   return (
     <Box
     ref={setNodeRef}
@@ -67,7 +51,7 @@ console.log(editTaskMode)
         backgroundColor:"#fff",
         gap:4,
         margin:2,
-        borderRadius:2,
+        borderRadius:3,
         border:"solid 1px #000",
         padding:1
 
@@ -112,7 +96,6 @@ console.log(editTaskMode)
     <OptionsMenu 
     deleteCols={deleteCols} 
     column={column}
-    setEditTaskMode={setEditTaskMode}
     />
 
 </Box>
@@ -176,6 +159,7 @@ console.log(editTaskMode)
         }}
         onKeyDown={(e)=>{
             if(e.key!=="Enter")return;
+            if(e.key==="Enter" && taskNames!=='')
             createTasks(
                 column.id,
                 taskNames
@@ -194,19 +178,25 @@ console.log(editTaskMode)
             sx={{
                 height:30,
                 width:20, 
+                textTransform:"none"
             }}
             onClick={()=>{
                 setEditTaskMode(false)
-            }}>Cancel</Button>
-            <Button variant='contained' sx={{
+            }}>
+                Cancel
+            </Button>
+            <Button variant='contained' 
+            sx={{
                     height:30,
-                    width:20,                  
+                    width:20, 
+                    textTransform:"none"                 
             }}
+            disabled={taskNames!==''?false:true}
             onClick={
                 ()=>{
                 createTasks(
                         column.id,
-                        taskName
+                        taskNames
                 )
                 setEditTaskMode(false)
                   
